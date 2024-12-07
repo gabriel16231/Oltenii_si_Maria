@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tasks for {{ date }}</title>
+</head>
+<body>
+    <h1>Tasks for {{ date }}</h1>
+
+    {% if tasks %}
+        <ul>
+            {% for task in tasks %}
+                <li>
+                    <strong>{{ task.start_time }}</strong> - {{ task.task }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No tasks for this date</p>
+    {% endif %}
+
+    <a href="{% url 'index' %}">Back to Calendar</a>
+</body>
+</html>

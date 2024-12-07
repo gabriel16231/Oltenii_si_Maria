@@ -1,20 +1,24 @@
+
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render
 from django.db import IntegrityError
 from .models import User, Program, Task
 from django.http import HttpResponseRedirect
 
+"""
 # Create your views here.
 def livetasks (request):
    user = User.objects.filter(username = request.user)
    data = request.POST["data"]
    if not data: all_tasks = Task.objects.all()
-   else: all_tasks = Task.objects.filter(start_time.date() = date)
+   #else: all_tasks = Task.objects.filter(start_time.date() == date)
    
-   return render (request,"view_tasks.html",{
+   return render(request,"view_tasks.html",{
        "nume":user.last_name, "prenume":user.first_name,"tasks":all_tasks;
    })
     
+"""
+
 
 
 
@@ -55,7 +59,7 @@ def register(request):
         
         if tip == "admin": salary = 5000
         elif tip == "fulltime" : salary = 3800
-        else: salary = 1500;
+        else: salary = 1500
 
         # Ensure password matches confirmation
         password = request.POST["password"]

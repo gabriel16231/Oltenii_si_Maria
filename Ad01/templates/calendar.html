@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calendar</title>
+    <style>
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px;
+            background-color: #ccc;
+        }
+        .calendar-day {
+            background-color: #fff;
+            padding: 10px;
+            cursor: pointer;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        .sidebar {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 300px;
+            height: 100%;
+            border-left: 1px solid #ddd;
+            padding: 20px;
+            background: #f8f9fa;
+            display: none;
+        }
+        .sidebar.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <!-- Calendar -->
+    <div class="calendar">
+        {% for day in days %}
+        <div class="calendar-day" data-date="{{ day }}">
+            <span>{{ day }}</span>
+            
+            <!-- Display events for this day -->
+            {% for event in events %}
+                {% if event.date.day == day %}  <!-- Check if the event's day matches the current day -->
+                    <div class="event">
+                        <strong>{{ event.title }}</strong>
+                        <p>{{ event.description }}</p>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+        {% endfor %}
+    </div>
+    
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <h3>Detalii Eveniment</h3>
+        <div id="event-content">
+            <div>
+                <h2>Detalii Eveniment</h2>
+                <p><strong>Titlu:</strong> {{ event.title }}</p>
+                <p><strong>Descriere:</strong> {{ event.description }}</p>
+                <p><strong>Dată:</strong> {{ event.date }}</p>
+            </div>
+        </div>
+    </div>
+    
+
+    <!-- JavaScript -->
+    <script>
+        const days = document.querySelectorAll('.calendar-day');
+        const eventContent = document.getElementById('event-content');
+        const sidebar = document.getElementById('sidebar');
+
+        days.forEach(day => {
+            day.addEventListener('click', () => {
+                const date = day.getAttribute('data-date');
+
+                // Afișează sidebar-ul
+                sidebar.classList.add('active');
+
+                // Fetch detalii eveniment prin AJAX
+                fetch(`/events/${date}`)
+                    .then(response => response.text())
+                    .then(data => {
+                        eventContent.innerHTML = data;
+                    })
+                    .catch(error => {
+                        eventContent.innerHTML = "<p>Nu există evenimente pentru această dată.</p>";
+                    });
+            });
+        });
+    </script>
+</body>
+</html>

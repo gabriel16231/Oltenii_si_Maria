@@ -13,9 +13,9 @@ class User(AbstractUser):
     ]
     
     # Tipul utilizatorului (admin sau user)
-    type = models.CharField(max_length=32, choices=TYPE_CHOICES)
-
-    # Managerul unui utilizator (ForeignKey la User, null pentru admini)
+    type = models.CharField(max_length=32, choices=TYPE_CHOICES, default='Employee Full Time')
+    """
+        # Managerul unui utilizator (ForeignKey la User, null pentru admini)
     manager = models.ForeignKey(
         'self',  # 'self' se referă la User, pentru că managerul va fi tot un User
         on_delete=models.SET_NULL,  # Dacă managerul este șters, câmpul manager va fi setat pe null
@@ -23,6 +23,7 @@ class User(AbstractUser):
         blank=True,  # Permite să fie gol pentru admini
         related_name='employees'  # Permite să accesăm angajații unui manager (opțional)
     )
+    """
 
     salary = models.IntegerField(null=True, blank=True)
     first_name = models.CharField(max_length=64)
@@ -41,6 +42,7 @@ class Program(models.Model):
     duration = models.IntegerField(null=True, blank=True)  # Durata în minute (poți adăuga validări ulterioare dacă dorești)
     required_people = models.IntegerField(null=True, blank=True)
     active = models.BooleanField(default=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=User.objects.first)
 
     # Prioritatea taskului
     PRIORITY_CHOICES = [
@@ -62,3 +64,12 @@ class Program(models.Model):
         if self.start_time and self.duration:
             return self.start_time + timedelta(minutes=self.duration)
         return None 
+    
+
+class Event(models.Model):
+    title = models.CharField(max_length=100)
+    description = models.TextField(blank=True, null=True)
+    date = models.DateField()
+
+    def __str__(self):
+        return self.title
