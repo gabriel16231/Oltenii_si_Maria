@@ -10,6 +10,7 @@ urlpatterns = [
     path("userpage",views2.user_page, name="user_page"),
     #path("liveTasks", views3.liveTasks, name="liveTasks"),
     
-    path('cal', views1.calendar_view, name='calendar_view'),  # Ruta pentru pagina principală a calendarului
+    path('calendar', views1.calendar_view, name='calendar_view'),  # Ruta pentru pagina principală a calendarului
+    path('calendar/<int:month>/<int:year>/', views1.calendar_view, name='calendar'),  # pagina pentru lună specifică
     path('events/<int:date>/', views1.event_details, name='event_details')  # Ruta pentru detaliile evenimentelor
 ]

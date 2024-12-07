@@ -5,22 +5,39 @@ from .models import Program
 from datetime import datetime
 from django.contrib import messages
 
-def calendar_view(request):
-    days = range(1, 31)  # Zilele 1-31
-    programs = Program.objects.all()  # Preia toate programele din baza de date
-    events = []
-    
-    # Creează un obiect de eveniment pentru fiecare program
-    for program in programs:
-        event = {
-            'date': program.start_time.date(),
-            'title': program.task.description,  # Titlul din task (sau alt câmp relevant)
-            'description': program.task.category,  # Descrierea din task (sau alt câmp relevant)
-            'category': program.task.category  # Categoria din task
-        }
-        events.append(event)
+def calendar_view(request, month=None, year=None):
+    # Obținem data curentă dacă nu se specifică luna și anul
+    if not month or not year:
+        current_date = datetime.now()
+        month = current_date.month
+        year = current_date.year
+    else:
+        month = int(month)
+        year = int(year)
 
-    return render(request, 'calendar.html', {'days': days, 'events': events})
+    # Obținem numele lunii
+    month_name = datetime(year, month, 1).strftime('%B')
+
+    # Obținem zilele lunii respective
+    days_in_month = [day for day in range(1, 32)]
+    # Verificăm validitatea zilelor
+    valid_days = []
+    for day in days_in_month:
+        try:
+            valid_days.append(datetime(year, month, day))
+        except ValueError:
+            break  # Dacă ziua nu există în luna respectivă, ieșim din buclă
+
+    # Căutăm evenimentele pentru luna respectivă
+    events = Program.objects.filter(start_time__month=month, start_time__year=year)
+
+    return render(request, 'calendar.html', {
+        'month_name': month_name,
+        'events': events,
+        'days': valid_days,
+        'current_month': month,
+        'current_year': year,
+    })
 
 
 def event_details(request, date):

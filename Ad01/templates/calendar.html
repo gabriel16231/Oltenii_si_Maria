@@ -36,25 +36,31 @@
     </style>
 </head>
 <body>
+    <!-- Navigare lună -->
+    <div>
+        <button onclick="navigateMonth(-1)">Anterior</button>
+        <span>{{ month_name }} {{ current_year }}</span>
+        <button onclick="navigateMonth(1)">Următor</button>
+    </div>
+
     <!-- Calendar -->
     <div class="calendar">
         {% for day in days %}
-        <div class="calendar-day" data-date="{{ day }}">
-            <span>{{ day }}</span>
+        <div class="calendar-day" data-date="{{ day.day }}">
+            <span>{{ day.day }}</span>
             
             <!-- Display events for this day -->
             {% for event in events %}
-                {% if event.date.day == day %}  <!-- Check if the event's day matches the current day -->
+                {% if event.start_time.day == day.day %}  <!-- Check if the event's day matches the current day -->
                     <div class="event">
-                        <strong>{{ event.title }}</strong>
-                        <p>{{ event.description }}</p>
+                        <strong>{{ event.task.description }}</strong>
+                        <p>{{ event.start_time }}</p>
                     </div>
                 {% endif %}
             {% endfor %}
         </div>
         {% endfor %}
     </div>
-    
 
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
@@ -69,10 +75,26 @@
             </div>
         </div>
     </div>
-    
 
     <!-- JavaScript -->
     <script>
+        // Navigare lună
+        function navigateMonth(direction) {
+            let currentMonth = {{ current_month }};  // Obține luna curentă
+            let currentYear = {{ current_year }};    // Obține anul curent
+            
+            currentMonth += direction;
+            if (currentMonth > 12) {
+                currentMonth = 1;
+                currentYear++;
+            } else if (currentMonth < 1) {
+                currentMonth = 12;
+                currentYear--;
+            }
+            
+            window.location.href = `/calendar/${currentMonth}/${currentYear}/`;
+        }
+
         const days = document.querySelectorAll('.calendar-day');
         const eventContent = document.getElementById('event-content');
         const sidebar = document.getElementById('sidebar');
