@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <title>Home</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <link rel="stylesheet" href="static\user_page_style.css">
+</head>
+
+
+<body>
+
+{% if admin == 1 %}
+  <h1>Hello, !Nume aici!</h1>
+  <div class="nav_bar"> <ul>
+    <li><a href="#">Taskuri</a></li>
+    <li><a href="#">Check in</a></li>
+    <li><a href="#">Istoric Taskuri</a></li>
+  </ul>
+  </div>
+{%else%}
+  <h1>Hello Admin, !Nume aici!</h1>
+  <div class="nav_bar"> <ul>
+    <li><a href="#">Taskuri Active</a></li>
+    <li><a href="#">Taskuri Nou</a></li>
+    <li><a href="#">Angajati</a></li>
+    
+    <li><a href="#">Istoric Taskuri</a></li>
+  </ul>
+  </div>
+{% endif %}
+
+</div>
+    
+     
+
+
+</body>
