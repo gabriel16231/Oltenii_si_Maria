@@ -49,7 +49,7 @@ class Program(models.Model):
         ('Critical', 'Critical'),
     ]
     priority = models.CharField(max_length=8, choices=PRIORITY_CHOICES, default='Medium')
-    
+
     # Progresul taskului (în procent)
     progress = models.DecimalField(max_digits=5, decimal_places=2, default=0.00, blank=True)  # Valori de la 0.00 la 100.00
 

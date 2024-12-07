@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <title>Register New Account</title>
+</head>
+<body>
+
+    <h1>Register</h1>
+    {% if message %}
+        <div>{{ message }}</div>
+    {% endif %}
+
+    <form action="{% url 'register' %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <input class="form-control" autofocus type="text" name="username" placeholder="Username">
+        </div>
+        <div class="form-group">
+            <input class="form-control" autofocus type="text" name="nume" placeholder="Last Name">
+        </div>
+        <div class="form-group">
+            <input class="form-control" autofocus type="text" name="prenume" placeholder="First Name">
+        </div>
+        <div class="form-group">
+            <input class="form-control" type="email" name="email" placeholder="Email Address">
+        </div>
+        <div class="form-group">
+            <input class="form-control" type="password" name="password" placeholder="Password">
+        </div>
+        <div class="form-group">
+            <input class="form-control" type="password" name="confirmation" placeholder="Confirm Password">
+        </div>
+
+        <label for="user_type">Select User Type:</label>
+        <select id="user_type" name="user_type">
+            <option value="admin">Admin</option>
+            <option value="full_time">Full Time</option>
+            <option value="part_time">Part Time</option>
+        </select>
+        <div class="form-group">
+            <input class="form-control" autofocus type="number" name="manager" placeholder="Your Manager's ID">
+        </div>
+        <input class="btn btn-primary" type="submit" value="Register">
+    </form>
+
+    Already have an account? <a href="{% url 'login' %}">Log In here.</a>
+</body>
+</html>
