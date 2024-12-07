@@ -42,7 +42,7 @@ class Program(models.Model):
     duration = models.IntegerField(null=True, blank=True)  # Durata în minute (poți adăuga validări ulterioare dacă dorești)
     required_people = models.IntegerField(null=True, blank=True)
     active = models.BooleanField(default=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, default=User.objects.first)
+    #user = models.ForeignKey(User, on_delete=models.CASCADE, default=User.objects.first)
 
     # Prioritatea taskului
     PRIORITY_CHOICES = [

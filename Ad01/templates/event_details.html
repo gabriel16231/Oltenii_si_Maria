@@ -9,15 +9,17 @@
 
     <h1 style="text-align: center; color: #007bff;">Detalii Eveniment</h1>
 
-    {% if event %}
-        <div style="background-color: white; border: 1px solid #ddd; padding: 20px; border-radius: 8px; max-width: 600px; margin: 0 auto;">
-            <h2 style="color: #333;">{{ event.name }}</h2>
-            <p><strong>Descriere:</strong> {{ event.description }}</p>
-            <p><strong>Data:</strong> {{ event.date }}</p>
-        </div>
+    {% if events %}
+        <ul>
+            {% for event in events %}
+                <li>{{ event.task.description }} - {{ event.start_time }}</li>
+            {% endfor %}
+        </ul>
     {% else %}
-        <p>Evenimentul nu a fost găsit.</p>
+        <p>Nu au fost găsite evenimente pentru această dată.</p>
     {% endif %}
+
+    
 
     <a href="{% url 'calendar_view' %}" style="display: block; margin-top: 20px; text-align: center; color: #007bff; text-decoration: none; font-weight: bold;">Înapoi la calendar</a>
 </body>
