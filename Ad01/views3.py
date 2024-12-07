@@ -1,10 +1,22 @@
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render
 from django.db import IntegrityError
-from .models import User
+from .models import User, Program, Task
 from django.http import HttpResponseRedirect
 
 # Create your views here.
+def livetasks (request):
+   user = User.objects.filter(username = request.user)
+   data = request.POST["data"]
+   if not data: all_tasks = Task.objects.all()
+   else: all_tasks = Task.objects.filter(start_time.date() = date)
+   
+   return render (request,"view_tasks.html",{
+       "nume":user.last_name, "prenume":user.first_name,"tasks":all_tasks;
+   })
+    
+
+
 
 def login_view(request):
     if request.method == "POST":

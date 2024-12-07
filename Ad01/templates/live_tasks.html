@@ -1,0 +1,15 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+
+<form action="{% url 'addComment' id=current.id %}" method="post">
+    {% csrf_token %} 
+    <div >
+        <input type="date" id="date" name="date">
+        <button type="submit">Search</button>
+    </div>    
+
+
+
+
+{% endblock %}

@@ -1,0 +1,43 @@
+.nav_bar{
+    background: #a3b3d6;
+    width: 100%;
+    height:auto;
+    border-bottom-style:solid;
+    border-bottom-color:#464d5c;
+    }
+.nav_bar ul{
+    list-style: none;
+    display: flex;       /* Example: Makes list items align in a row */
+    flex-direction: row; /* Horizontal alignment */
+    gap: 2%; 
+    margin:0%;
+    
+}
+.nav_bar li{
+    
+    padding:0.5%;
+    list-style: none;
+    text-align: left;
+}
+
+a:link {
+
+border-style:solid;
+border-width: 2px;
+border-color: #464d5c;
+border-radius:25px;
+  text-decoration: none;
+}
+
+a:visited {
+  text-decoration: none;
+  
+}
+
+a:hover {
+  background-color:#9ba6bd;
+}
+
+a:active {
+  text-decoration: underline;
+}

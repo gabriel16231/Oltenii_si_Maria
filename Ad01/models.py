@@ -39,7 +39,8 @@ class Program(models.Model):
 
     start_time = models.DateTimeField(null=True, blank=True)  # Opțional, poate fi lăsat necompletat
     duration = models.IntegerField(null=True, blank=True)  # Durata în minute (poți adăuga validări ulterioare dacă dorești)
-    required_people = models.IntegerField(null=True, blank=True)   
+    required_people = models.IntegerField(null=True, blank=True)
+    active = models.BooleanField(default=True)
 
     # Prioritatea taskului
     PRIORITY_CHOICES = [
@@ -49,7 +50,7 @@ class Program(models.Model):
         ('Critical', 'Critical'),
     ]
     priority = models.CharField(max_length=8, choices=PRIORITY_CHOICES, default='Medium')
-    
+
     # Progresul taskului (în procent)
     progress = models.DecimalField(max_digits=5, decimal_places=2, default=0.00, blank=True)  # Valori de la 0.00 la 100.00
 
