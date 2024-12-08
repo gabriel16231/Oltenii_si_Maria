@@ -17,6 +17,9 @@ urlpatterns = [
     path("detalii/<str:u>",views3.detalii_angajati, name="detalii"),
     path('calendar', views1.calendar_view, name='calendar_view'),  # Ruta pentru pagina principală a calendarului
     path('calendar/<int:month>/<int:year>/', views1.calendar_view, name='calendar'),  # pagina pentru lună specifică
-    path('events/<int:date>/', views1.event_details, name='event_details')
+    path('events/<int:date>/', views1.event_details, name='event_details'),
+    path("history/",views3.istoric, name="istoric"),
+    path("upcoming/",views3.upcoming, name="upcoming"),
+    path("account/",views3.account,name="account"),
     #path("liveTasks", views3.liveTasks, name="liveTasks")
 ]

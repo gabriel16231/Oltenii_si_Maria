@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    <h3>Upcoming tasks:</h3>
+
+    <ul>
+        {% for task in tasks %}
+           <li> 
+            <h7>{{ task.category }}</h7>
+            {{ task.start_time|date:"d-m-Y H:i" }} -> {{ task.end_time|date:"d-m-Y H:i" }}
+        </li>
+        {% endfor %}
+    </ul>
+
+
+
+{% endblock %}

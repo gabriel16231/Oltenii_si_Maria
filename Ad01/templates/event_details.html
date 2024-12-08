@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalii Eveniment</title>
 </head>
-<body style="font-family: Arial, sans-serif; background-color: #f4f4f4; color: #333; margin: 0; padding: 20px;">
+<body style="font-family: Arial, sans-serif; background-color: #f4f4f4; color: red; margin: 0; padding: 20px;">
 
-    <h1 style="text-align: center; color: #007bff;">Detalii Eveniment</h1>
+    <h1 style="text-align: center; color:black;">Detalii Eveniment</h1>
 
     {% if events %}
         <ul>
@@ -21,8 +21,8 @@
 
     
 
-    <a href="{% url 'showc' %}" style="display: block; margin-top: 20px; text-align: center; color: #007bff; text-decoration: none; font-weight: bold;">Înapoi la calendar</a>
-    <a href="{% url 'task_dropdown' %}" style="display: block; margin-top: 20px; text-align: center; color: #007bff; text-decoration: none; font-weight: bold;">adauga task existent</a>
-    <a href="{% url 'schedule' %}" style="display: block; margin-top: 20px; text-align: center; color: #007bff; text-decoration: none; font-weight: bold;">adauga task nou</a>
+    <a href="{% url 'showc' %}" style="display: block; margin-top: 20px; text-align: center; color: white; text-decoration: none; font-weight: bold;background-color:black;border-radius:10px">Înapoi la calendar</a>
+    <a href="{% url 'task_dropdown' %}" style="display: block; margin-top: 20px; text-align: center; color: white; text-decoration: none; font-weight: bold;background-color:black;border-radius:10px">adauga task existent</a>
+    <a href="{% url 'schedule' %}" style="display: block; margin-top: 20px; text-align: center; color: white; text-decoration: none; font-weight: bold;background-color:black; border-radius:10px">adauga task nou</a>
 </body>
 </html>

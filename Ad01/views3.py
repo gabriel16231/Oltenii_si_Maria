@@ -2,10 +2,72 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render,redirect
 from django.db import IntegrityError
 from .models import User, Program, Task
+from django.utils.timezone import now
+from django.urls import reverse
+from datetime import timedelta
 from django.utils import timezone
 from django.http import HttpResponseRedirect
 
 # Create your views here.
+def istoric(request):
+    u = request.user
+    current_time = now()
+    tasks = Program.objects.filter(user=u, start_time__lt = current_time)
+    taskuri_cu_detalii = []
+    for task in tasks:
+        end_time = task.start_time + timedelta(minutes=task.duration * 60) if task.duration else None
+        taskuri_cu_detalii.append({
+            "category": task.task.category,
+            "start_time": task.start_time,
+            "end_time": end_time,
+        })
+    return render(request,"istoric.html",{
+        "is_admin":False,
+        "nume": u.last_name,
+        "prenume": u.first_name,
+        "tasks":taskuri_cu_detalii
+    })
+
+def upcoming(request):
+    u = request.user
+    current_time = now()
+    tasks = Program.objects.filter(user=u, start_time__gte = current_time)
+    taskuri_cu_detalii = []
+    for task in tasks:
+        end_time = task.start_time + timedelta(minutes=task.duration * 60) if task.duration else None
+        taskuri_cu_detalii.append({
+            "category": task.task.category,
+            "start_time": task.start_time,
+            "end_time": end_time,
+        })
+    return render(request, "upcoming.html", {
+        "is_admin": False,
+        "nume": u.last_name,
+        "prenume": u.first_name,
+        "tasks": taskuri_cu_detalii
+    })
+
+def account(request):
+    if request.method == "POST":
+        user = request.user
+        email = request.POST["email"]
+        nume = request.POST["nume"]
+        prenume = request.POST["prenume"]
+        user.email = email
+        user.first_name = prenume
+        user.last_name = nume   
+        user.save()
+
+        return HttpResponseRedirect(reverse("upcoming"))
+    else : 
+        u = request.user
+        return render(request,"account.html",{
+            "is_admin": False,
+            "nume": u.last_name,
+            "prenume": u.first_name,
+            "user":u,
+        }) 
+    
 def live_tasks(request):
     u = request.user
     users_under_manager = User.objects.filter(manager=u.username)

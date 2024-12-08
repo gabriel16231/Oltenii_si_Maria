@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block body %}
+
+<form action="{% url 'account' %}" method="post">
+    {% csrf_token %}
+    <div class="form-group">
+        <input class="form-control" autofocus type="text" name="nume" placeholder="Last Name" value = "{{ user.last_name }}">
+    </div>
+    <div class="form-group">
+        <input class="form-control" autofocus type="text" name="prenume" placeholder="First Name" value = "{{ user.first_name }}">
+    </div>
+    <div class="form-group">
+        <input class="form-control" type="email" name="email" placeholder="Email Address" value = "{{ user.email }}">
+    </div>
+    <input class="btn btn-primary" type="submit" value="Save Changes">
+</form>
+<h3>Salariu in aceasta luna: {{ user.salary}}</h3>
+{% endblock %}

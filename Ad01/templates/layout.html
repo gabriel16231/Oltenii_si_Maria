@@ -20,9 +20,10 @@
       <a class="navbar-brand" href="#">Hello Admin, {{nume | capfirst}} {{prenume | capfirst}}</a>
     </div>
     <ul class="nav navbar-nav">
-      <li class="{% url 'liveTasks' %}"><a href="#">Live Tasks</a></li>
+      <li ><a href="{% url 'liveTasks' %}">Live Tasks</a></li>
       <li><a href="{% url 'showc' %}">Program Task</a></li>
       <li><a href="{% url 'Angajati' %}">Angajati</a></li>
+      <li><a href="{% url 'logout' %}">Logout</a></li>
     </ul>
   </div>
 </nav>
@@ -36,10 +37,11 @@
       <a class="navbar-brand" href="#">Hello, {{nume | capfirst}} {{prenume | capfirst}}</a>
     </div>
     <ul class="nav navbar-nav">
-      <li class="active"><a href="#">Home</a></li>
       <li><a href="#">Alege Taskuri</a></li>
-      <li><a href="#">Taskurile tale</a></li>
-      <li><a href="#">Istoric Taskuri</a></li>
+      <li><a href="{% url 'upcoming' %}">Upcoming Tasks</a></li>
+      <li><a href="{% url 'istoric' %}">Task History</a></li>
+      <li><a href="{% url 'account' %}">Your Account</a></li>
+      <li><a href="{% url 'logout' %}">Logout</a></li>
     </ul>
   </div>
 </nav>
