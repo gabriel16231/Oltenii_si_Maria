@@ -1,15 +1,25 @@
-{% extends "auctions/layout.html" %}
+{% extends "layout.html" %}
 
 {% block body %}
 
-<form action="{% url 'addComment' id=current.id %}" method="post">
-    {% csrf_token %} 
-    <div >
-        <input type="date" id="date" name="date">
-        <button type="submit">Search</button>
-    </div>    
+<ul>
+    <h3>In Progress:</h3>
+    {% for program in on_tasks %}
+        <li class="live_task">
+            <h5>{{ program.task.category }} -> {{ program.start_time }}</h5>
+            <p>{{ program.task.description }}</p>
+        </li>
+    {% endfor %}
 
+    <h3>Already completed:</h3>
 
+        {% for program in off_tasks %}
+            <li class="off_task">
+                <h5>{{ program.task.category }} -> {{ program.start_time }}</h5>
+                <p>{{ program.task.description }}</p>
+            </li>
+        {% endfor %}
 
+    </ul>
 
 {% endblock %}

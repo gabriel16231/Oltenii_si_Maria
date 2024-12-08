@@ -41,3 +41,8 @@ a:hover {
 a:active {
   text-decoration: underline;
 }
+
+.back_navbar{
+    background: #fc0303
+
+}

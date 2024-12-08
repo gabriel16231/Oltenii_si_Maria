@@ -5,34 +5,48 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>Home</title>
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-        <link rel="stylesheet" href="static\user_page_style.css">
+        
+        <link rel="stylesheet" href="{% static 'livestyle.css' %}">
 </head>
 
 
 <body>
 
-{% if admin == 1 %}
-  <h1>Hello, {{nume | capfirst}} {{prenume | capfirst}}</h1>
-  <div class="nav_bar"> <ul>
-    <li><a href="#">Taskuri</a></li>
-    <li><a href="#">Check in</a></li>
-    <li><a href="#">Istoric Taskuri</a></li>
-  </ul>
+{% if is_admin %}
+  
+  <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Hello Admin, {{nume | capfirst}} {{prenume | capfirst}}</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="{% url 'liveTasks' %}"><a href="#">Live Tasks</a></li>
+      <li><a href="{% url 'showc' %}">Program Task</a></li>
+      <li><a href="{% url 'Angajati' %}">Angajati</a></li>
+    </ul>
   </div>
+</nav>
 {%else%}
 
-  <h1>Hello Admin, {{nume | capfirst}} {{prenume | capfirst}}</h1>
-  <div class="nav_bar"> <ul>
-    <li><a href="#">Taskuri Active</a></li>
-    <li><a href="#">Taskuri Nou</a></li>
-    <li><a href="#">Angajati</a></li>
-    
-    <li><a href="#">Istoric Taskuri</a></li>
-  </ul>
+  
+  
+  <nav class="navbar navbar-default">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" href="#">Hello, {{nume | capfirst}} {{prenume | capfirst}}</a>
+    </div>
+    <ul class="nav navbar-nav">
+      <li class="active"><a href="#">Home</a></li>
+      <li><a href="#">Alege Taskuri</a></li>
+      <li><a href="#">Taskurile tale</a></li>
+      <li><a href="#">Istoric Taskuri</a></li>
+    </ul>
   </div>
-{% endif %}
+</nav>
 
-</div>
+  
+  
+{% endif %}
 {% block body %}
 {% endblock %}
 </body>

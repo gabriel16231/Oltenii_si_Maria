@@ -1,0 +1,312 @@
+{% extends "layout.html" %}
+
+{% block body %}
+    <style> 
+        .calendar {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1px;
+            background-color: #ccc;
+        }
+        .calendar-day {
+            background-color: #fff;
+            padding: 10px;
+            cursor: pointer;
+            text-align: center;
+            border: 1px solid #ddd;
+        }
+        .calendar-header {
+            background-color: #000000;
+            text-align: center;
+            font-weight: bold;
+            font-color: #fcfcfc;
+            color:white;
+        }
+        .sidebar {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            width: 300px;
+            height: 100%;
+            border-left: 1px solid #ddd;
+            padding: 20px;
+            background: #f8f9fa;
+            display: none;
+        }
+        .sidebar.active {
+            display: block;
+        }
+        {%if show_calendar == False %}
+            .calendar {
+            display:none;
+            }
+            
+            .hc{
+            display:none;
+            }
+        {%endif%}
+        {%if hide_add == True %}
+            .hadd {
+            display:none;
+            }
+        {%endif%}
+        {%if hide_dd == True %}
+            .hdd {
+            display:none;
+            
+            }
+        {%endif%}
+        button
+        {
+        font-color: black;
+        }
+        button:hover{
+        background-color:#899bfa;
+        color: black;
+            }
+    </style>
+    
+    <h2>Plan New Task</h2>
+    
+    
+    
+    <div class="hc" style="margin:0.5%">
+        <button onclick="navigateMonth(-1)" style="border-radius: 20px 0 0 20px">Anterior</button>
+        <span>{{ month_name }} {{ current_year }}</span>
+        <button onclick="navigateMonth(1)" style="border-radius: 0 20px 20px 0">Următor</button>
+    </div>
+
+    <!-- Calendar -->
+    <div class="calendar" id="calendar">
+        <!-- Header with week days -->
+        <div class="calendar-header">Sun</div>
+        <div class="calendar-header">Mon</div>
+        <div class="calendar-header">Tue</div>
+        <div class="calendar-header">Wed</div>
+        <div class="calendar-header">Thu</div>
+        <div class="calendar-header">Fri</div>
+        <div class="calendar-header">Sat</div>
+    </div>
+    
+   
+    <div class="hdd">
+    <h1>Select a Task Category</h1>
+
+    <form method="GET" action="{% url 'task_dropdown' %}">
+        <label for="category">Task Category:</label>
+        <select name="category" id="category">
+            <option value="">-- Select a Category --</option>
+            {% for category in categories %}
+                <option value="{{ category }}">{{ category }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Submit</button>
+    </form>
+    </div>
+    
+    
+    <div class="hadd">
+    <button id="toggleTaskFormBtn">Create New Task</button>
+    <div id="createTaskForm" style="display:none;">
+    
+    
+    
+    <h1>Add a New Task</h1>
+
+    <form method="POST" >
+        {% csrf_token %}
+        
+        <label for="category">Category:</label>
+        <input type="text" name="category" id="category" required>
+        <br>
+
+        <label for="weight">Weight:</label>
+        <input type="number" name="weight" id="weight" step="0.01" min="0" required>
+        <br>
+
+        <label for="description">Description:</label>
+        <textarea name="description" id="description" rows="4" required></textarea>
+        <br>
+
+        <button type="submit">Save Task</button>
+    </form>
+    
+    </div>
+    </div>
+    
+    
+    <div  class="hdd">
+    <h1>Create Program Entry</h1>
+
+    <form method="POST" action="{% url 'create_program' %}">
+        {% csrf_token %}
+
+        <label for="task">Task:</label>
+        <select name="task" id="task">
+            {% for task in tasks %}
+                <option value="{{ task.id }}">{{ task.category }}</option>
+            {% endfor %}
+        </select>
+        <br>
+
+        <label for="start_time">Start Time:</label>
+        <input type="datetime-local" name="start_time" id="start_time" required>
+        <br>
+
+        <label for="duration">Duration (minutes):</label>
+        <input type="number" name="duration" id="duration" min="1" required>
+        <br>
+        
+        <button type="submit">Save Program</button>
+    </form>
+    
+    <h2>All Programs</h2>
+    {% if programs %}
+        <ul>
+            {% for program in programs %}
+                <li>
+                    Task: {{ program.task.category }} - 
+                    Start Time: {{ program.start_time }} - 
+                    Duration: {{ program.duration }} minutes -  
+                    Priority: {{ program.priority }} - 
+                    Progress: {{ program.progress }}%
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No programs available.</p>
+    {% endif %}
+    
+    </div>
+
+     <script>
+        // Get the elements for toggling visibility
+        const toggleButton = document.getElementById("toggleTaskFormBtn");
+        const taskForm = document.getElementById("createTaskForm");
+
+        // Add event listener to toggle the visibility of the task creation form
+        toggleButton.addEventListener("click", function() {
+            if (taskForm.style.display === "none") {
+                taskForm.style.display = "block";  // Show the form
+            } else {
+                taskForm.style.display = "none";   // Hide the form
+            }
+        });
+    </script>
+    
+     <!-- Sidebar -->
+     <div class="sidebar" id="sidebar">
+         <h3>Detalii Eveniment</h3>
+         <div id="event-content">
+             <div>
+                 <h2>Detalii Eveniment</h2>
+                 <p><strong>Titlu:</strong> {{ event.title }}</p>
+                 <p><strong>Descriere:</strong> {{ event.description }}</p>
+                 <p><strong>Dată:</strong> {{ event.date }}</p>
+                 <p><strong>Categoria:</strong> {{ event.category }}</p>
+             </div>
+         </div>
+     </div>
+
+     <!-- JavaScript -->
+     <script>
+         // Functie pentru a calcula ziua de început a lunii
+         function getFirstDayOfMonth(month, year) {
+             // Creăm un obiect Date pentru prima zi din luna respectivă
+             const date = new Date(year, month - 1, 1); // Luna este 0-indexed (0 pentru ianuarie)
+             return date.getDay(); // returnează ziua săptămânii (0=Sunday, 1=Monday, ..., 6=Saturday)
+         }
+     
+         // Functie pentru a popula calendarul
+         function populateCalendar(month, year, daysInMonth) {
+             const calendar = document.getElementById('calendar');
+             const firstDay = getFirstDayOfMonth(month, year); // Obținem ziua de început a lunii
+             const totalDays = daysInMonth + firstDay;
+
+             // Curățăm calendarul anterior
+             calendar.innerHTML = `
+                 <div class="calendar-header">Sun</div>
+                 <div class="calendar-header">Mon</div>
+                 <div class="calendar-header">Tue</div>
+                 <div class="calendar-header">Wed</div>
+                 <div class="calendar-header">Thu</div>
+                 <div class="calendar-header">Fri</div>
+                 <div class="calendar-header">Sat</div>
+             `;
+
+             // Adăugăm zilele goale înainte de prima zi a lunii
+             for (let i = 0; i < firstDay; i++) {
+                 const emptyDay = document.createElement('div');
+                 emptyDay.classList.add('calendar-day');
+                 calendar.appendChild(emptyDay);
+             }
+
+             // Adăugăm zilele din lună
+             for (let i = 1; i <= daysInMonth; i++) {
+                 const day = document.createElement('div');
+                 day.classList.add('calendar-day');
+                 day.textContent = i;
+                 day.dataset.date = i;
+                 calendar.appendChild(day);
+             }
+
+             // Adăugăm zilele goale după ultima zi a lunii pentru a completa calendarul
+             const remainingDays = 7 - totalDays % 7;
+             for (let i = 0; i < remainingDays && remainingDays < 7; i++) {
+                 const emptyDay = document.createElement('div');
+                 emptyDay.classList.add('calendar-day');
+                 calendar.appendChild(emptyDay);
+             }
+
+             // Gestionăm click-urile pe zilele din calendar (pentru a arăta evenimentele)
+             const days = document.querySelectorAll('.calendar-day');
+             const eventContent = document.getElementById('event-content');
+             const sidebar = document.getElementById('sidebar');
+     
+             days.forEach(day => {
+                 day.addEventListener('click', () => {
+                     const date = day.getAttribute('data-date');
+         
+                     // Afișăm sidebar-ul
+                     sidebar.classList.add('active');
+         
+                     // Fetch detalii eveniment prin AJAX
+                     fetch(`/events/${date}`)
+                         .then(response => response.text())
+                         .then(data => {
+                             eventContent.innerHTML = data;
+                         })
+                         .catch(error => {
+                             eventContent.innerHTML = "<p>Nu există evenimente pentru această dată.</p>";
+                         });
+                 });
+             });
+         }
+     
+         // Funcție pentru a naviga între luni
+         function navigateMonth(direction) {
+             let currentMonth = {{ current_month }};  // Obținem luna curentă
+             let currentYear = {{ current_year }};    // Obținem anul curent
+     
+             currentMonth += direction;
+             if (currentMonth > 12) {
+                 currentMonth = 1;
+                 currentYear++;
+             } else if (currentMonth < 1) {
+                 currentMonth = 12;
+                 currentYear--;
+             }
+     
+             window.location.href = `/calendar/${currentMonth}/${currentYear}/`;
+         }
+     
+         // Populăm calendarul la încărcarea paginii
+         window.onload = function() {
+             const currentMonth = {{ current_month }};  // Luna curentă
+             const currentYear = {{ current_year }};    // Anul curent
+             const daysInMonth = new Date(currentYear, currentMonth, 0).getDate();  // Obținem numărul de zile din luna curentă
+             populateCalendar(currentMonth, currentYear, daysInMonth);
+         }
+     </script>
+{% endblock %}

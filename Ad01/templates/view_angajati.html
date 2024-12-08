@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<h3>All your employees:</h3>
+<ul>
+    {% for ang in all_angajati %}
+    <li>
+        <a href="{% url 'detalii' u=ang.username %}">
+            {{ ang.first_name | capfirst }} {{ ang.last_name | capfirst }}
+        </a>
+        <br>
+        <!-- Display employee details only if `detalii` exists for this employee -->
+        {% if detalii and detalii.username == ang.username %}
+        <div>
+            <h7>Salariu: {{ detalii.salary }}</h7><br>
+            <h7>Email: {{ detalii.email }}</h7>
+        </div>
+        {% endif %}
+    </li>
+    {% endfor %}
+</ul>
+</ul>
+
+
+{% endblock %}
