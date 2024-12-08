@@ -27,6 +27,19 @@ def istoric(request):
         "prenume": u.first_name,
         "tasks":taskuri_cu_detalii
     })
+def update_progress(request, task_id):
+    if request.method == 'POST':
+        progress = request.POST.get
+        ('progress')
+
+        # Update the task's progress
+        task = Program.objects.get(id=task_id)
+        task.progress = progress
+        task.save()
+
+        return redirect('upcoming')  # Redirect back to the upcoming tasks page
+
+    return HttpResponse("Invalid request", status=400)
 
 def upcoming(request):
     u = request.user
@@ -71,9 +84,9 @@ def account(request):
 def live_tasks(request):
     u = request.user
     users_under_manager = User.objects.filter(manager=u.username)
-
-    on_tasks = Program.objects.filter(user__in=users_under_manager, active=True)
-    off_tasks = Program.objects.filter(user__in=users_under_manager, active=False)
+    current_time = now()
+    on_tasks = Program.objects.filter(user__in=users_under_manager, active=True, start_time__day = current_time.day)
+    off_tasks = Program.objects.filter(user__in=users_under_manager, active=False,start_time__day = current_time.day)
 
     return render(request, "live_tasks.html", {
         "is_admin":True,

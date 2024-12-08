@@ -21,5 +21,6 @@ urlpatterns = [
     path("history/",views3.istoric, name="istoric"),
     path("upcoming/",views3.upcoming, name="upcoming"),
     path("account/",views3.account,name="account"),
+    path('task_approval/', views1.task_approval, name='task_approval')
     #path("liveTasks", views3.liveTasks, name="liveTasks")
 ]

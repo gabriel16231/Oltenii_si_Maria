@@ -1,17 +1,18 @@
 {% extends "layout.html" %}
 
 {% block body %}
-    <h3>Completed tasks:</h3>
+    <div class="container my-5">
+        <h3 class="mb-4">Task History:</h3>
 
-    <ul>
-        {% for task in tasks %}
-           <li> 
-            <h7>{{ task.category }}</h7>
-            {{ task.start_time|date:"d-m-Y H:i" }} -> {{ task.end_time|date:"d-m-Y H:i" }}
-        </li>
-        {% endfor %}
-    </ul>
-
-
-
+        <div class="list-group">
+            {% for task in tasks %}
+                <a href="#" class="list-group-item list-group-item-action">
+                    <div class="d-flex justify-content-between">
+                        <h5 class="mb-1">{{ task.category }}</h5>
+                        <small>{{ task.start_time|date:"d-m-Y H:i" }} -> {{ task.end_time|date:"d-m-Y H:i" }}</small>
+                    </div>
+                </a>
+            {% endfor %}
+        </div>
+    </div>
 {% endblock %}

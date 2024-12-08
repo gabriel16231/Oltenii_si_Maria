@@ -1,22 +1,53 @@
 {% extends "layout.html" %}
 
 {% block body %}
+<style>
+/* General styling for all <li> elements inside task lists */
+.live_task, .off_task {
+    border: 2px solid #000; /* Black border for clarity */
+    border-radius: 8px; /* Rounded corners for the box */
+    padding: 15px; /* Spacing inside the box */
+    margin: 10px 0; /* Space between the boxes */
+    color: #fff; /* Text color set to white for contrast */
+    font-family: Arial, sans-serif; /* Set a clean font */
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2); /* Subtle shadow for depth */
+}
 
+/* Specific styling for live tasks */
+.live_task {
+    background-color: #28a745; /* Green background for live tasks */
+    max-width:50%;
+}
+
+/* Specific styling for off tasks */
+.off_task {
+    background-color: #f5d51e; /* Red background for off tasks */
+    max-width:50%;
+}
+
+/* Optional: Add a hover effect for better UX */
+.live_task:hover, .off_task:hover {
+    transform: scale(1.02); /* Slightly enlarge on hover */
+    box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.3); /* Stronger shadow on hover */
+}
+</style>
 <ul>
     <h3>In Progress:</h3>
     {% for program in on_tasks %}
         <li class="live_task">
             <h5>{{ program.task.category }} -> {{ program.start_time }}</h5>
             <p>{{ program.task.description }}</p>
+            <h6>{{program.user.username}}</h6>
         </li>
     {% endfor %}
 
-    <h3>Already completed:</h3>
+    <h3>From Today:</h3>
 
         {% for program in off_tasks %}
             <li class="off_task">
                 <h5>{{ program.task.category }} -> {{ program.start_time }}</h5>
                 <p>{{ program.task.description }}</p>
+                <h6>{{program.user.username}}</h6>
             </li>
         {% endfor %}
 

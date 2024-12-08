@@ -1,0 +1,83 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<!-- Container pentru conținut -->
+<div class="container my-5">
+
+    <h1 class="text-center mb-4">Task Approval Portal</h1>
+    
+    <!-- Formularul de selectare a datei și orei -->
+    <form action="" method="POST">
+        {% csrf_token %}
+        
+        <!-- Selectarea datei -->
+        <div class="form-group mb-4">
+            <label for="date" class="form-label">Select date</label>
+            <input class="form-control" type="date" name="date" id="date" required autofocus>
+        </div>
+
+        {% if ft %}
+        <!-- Selectarea orei pentru utilizatorii full-time -->
+        <div class="form-group mb-4">
+            <label for="time" class="form-label">Select hour</label>
+            <input class="form-control" type="time" name="time" id="time" required>
+        </div>
+        {% endif %}
+        
+        <!-- Butonul de trimitere a formularului -->
+        <div class="text-center mb-4">
+            <button type="submit" class="btn btn-primary">Take Tasks</button>
+        </div>
+
+        <!-- Tabelul cu taskuri -->
+        <table class="table table-bordered table-hover">
+            <thead class="thead-light">
+                <tr>
+                    <th scope="col">Time</th>
+                    <th scope="col">Task Name</th>
+                    <th scope="col">Approval</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% if tasks_by_hour %}
+                    {% for hour, tasks in tasks_by_hour.items %}
+                    <tr>
+                        <td colspan="3" class="bg-secondary text-white text-center">
+                            <h4>{{ hour }}:00</h4>
+                        </td>
+                    </tr>
+                    {% for task in tasks %}
+                    <tr>
+                        <td></td> <!-- Lăsăm prima celulă goală pentru un tab -->
+                        <td>{{ task.task.category }} - {{ task.task.description }}</td>
+                        <td>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="{{ task.id }}" name="programs"
+                                    {% if task.active %} checked {% endif %}>
+                                <label class="form-check-label">Aprobă</label>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="3" class="text-center text-danger">No tasks for the selected date </td>
+                    </tr>
+                {% endif %}
+            </tbody>
+        </table>
+
+        <!-- Butonul final de salvare -->
+        <div class="text-center">
+            <button class="btn btn-success" type="submit">Save</button>
+        </div>
+    </form>
+
+</div>
+
+<!-- Include jQuery și Bootstrap JS pentru funcționalitate completă -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+{% endblock %}

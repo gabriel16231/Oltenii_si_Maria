@@ -65,6 +65,6 @@ class Program(models.Model):
                 self.active = False
             else:
                 # If it's not the right time yet, set active to True
-                self.active = True
+                self.active = False
 
         super(Program, self).save(*args, **kwargs)
